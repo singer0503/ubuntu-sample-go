@@ -32,9 +32,9 @@ func downloadFileSample(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	port := ":8080"
-	//http.HandleFunc("/hello", hello)
-	//http.HandleFunc("/headers", headers)
-	http.HandleFunc("/download", downloadFileSample)
+	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/headers", headers)
+	//http.HandleFunc("/download", downloadFileSample)
 	fmt.Println("ok")
 	fmt.Println("port = " + port)
 	http.ListenAndServe(port, nil)
