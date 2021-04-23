@@ -23,7 +23,7 @@ func taskWithParams(a int, b string) {
 }
 
 // 目標 URL
-var loginEndpoint string = "http://35.201.243.111:8090/hello"
+var loginEndpoint string = "http://35.201.243.111:8080/hello"
 var count int = 0
 
 var w *csv.Writer
