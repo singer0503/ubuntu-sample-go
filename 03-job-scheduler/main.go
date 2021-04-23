@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
@@ -24,6 +26,8 @@ func taskWithParams(a int, b string) {
 var loginEndpoint string = "http://35.201.243.111:8090/hello"
 var count int = 0
 
+var w *csv.Writer
+
 func taskHttpRequest() {
 	conntransport := &http.Transport{
 		DisableKeepAlives:  true, // 這樣才會 send FIN 封包
@@ -31,7 +35,6 @@ func taskHttpRequest() {
 	}
 	count++
 	startTime := time.Now()
-	fmt.Print(strconv.Itoa(count) + "," + startTime.Format("2006-01-02 15:04:05.000000"))
 	url := loginEndpoint
 	req, err := http.NewRequest("GET", url, nil)
 	req.Header.Set("Content-Type", "application/json")
@@ -48,13 +51,30 @@ func taskHttpRequest() {
 	defer func() {
 		resp.Body.Close()
 		endTime := time.Now()
-		deferTime := startTime.Sub(startTime)
-		fmt.Print("," + endTime.Format("2006-01-02 15:04:05.000000"))
-		fmt.Println("," + strconv.FormatInt(deferTime.Milliseconds(), 10))
+		deferTime := endTime.Sub(startTime)
+		fmt.Println(strconv.Itoa(count) + "," + startTime.Format("2006-01-02 15:04:05.000") + "," + endTime.Format("2006-01-02 15:04:05.000") + "," + strconv.FormatInt(deferTime.Milliseconds(), 10) + "ms")
+		w.Write([]string{strconv.Itoa(count), startTime.Format("2006-01-02 15:04:05.000"), endTime.Format("2006-01-02 15:04:05.000"), strconv.FormatInt(deferTime.Milliseconds(), 10) + "ms"})
+		w.Flush()
 	}()
 }
 
 func main() {
+	// 不存在則建立;存在則清空;讀寫模式;
+	file, err := os.Create("call_hello_list.csv")
+	if err != nil {
+		fmt.Println("open file is failed, err: ", err)
+	}
+	// 延遲關閉
+	defer file.Close()
+
+	// 寫入UTF-8 BOM，防止中文亂碼
+	file.WriteString("\xEF\xBB\xBF")
+
+	w = csv.NewWriter(file)
+	// 寫入資料
+	w.Write([]string{"發送編號", "起始時間", "結束時間", "消耗時間"})
+	w.Flush()
+
 	fmt.Println("No,StartTime,EndTime,UseTime")
 	taskHttpRequest()
 
