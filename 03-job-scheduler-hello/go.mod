@@ -1,4 +1,4 @@
-module job-scheduler
+module job-scheduler-hello
 
 go 1.15
 
