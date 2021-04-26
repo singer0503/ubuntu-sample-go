@@ -29,12 +29,18 @@ var count int = 0
 var w *csv.Writer
 
 func taskDownloadRequest() {
+	conntransport := &http.Transport{
+		DisableKeepAlives:  true, // 這樣才會 send FIN 封包
+		DisableCompression: true,
+	}
 	count++
 	startTime := time.Now()
 	url := loginEndpoint
 	req, err := http.NewRequest("GET", url, nil)
-	client := &http.Client{}
+	//client := &http.Client{}
+	client := &http.Client{Transport: conntransport}
 	resp, err := client.Do(req)
+
 	if err != nil {
 		panic(err)
 	}
