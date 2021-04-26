@@ -19,7 +19,7 @@ const responseSize = 1 * oneGB
 const serverAddr = "localhost:9999"
 
 func startServer() {
-	// Mock HTTP server that always returns 1GB of data
+	// Mock HTTP server that always returns 1GB of data / 開啟一個 goroutine 模擬 http Server
 	go http.ListenAndServe(serverAddr, http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Content-length", fmt.Sprintf("%d", responseSize))
 
