@@ -35,5 +35,6 @@ func main() {
 	router.GET("/hello", GetHello)
 	router.GET("/headers", GetHeaders)
 
-	logrus.Fatal(router.RunTLS(port, "server.crt", "server.key"))
+	//logrus.Fatal(router.RunTLS(port, "server.crt", "server.key"))
+	logrus.Fatal(router.RunTLS(port, "maxhuang_me.crt", "myserver.key"))
 }
