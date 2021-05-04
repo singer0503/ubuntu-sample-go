@@ -59,16 +59,15 @@ func taskHttpRequest() {
 }
 
 func main() {
-	// 不存在則建立;存在則清空;讀寫模式;
-	file, err := os.Create("call_hello_list.csv")
+
+	// 不存在則建立;存在繼續往下寫;讀寫模式;
+	file, err := os.OpenFile("1_call_hello_list.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println("open file is failed, err: ", err)
 	}
+
 	// 延遲關閉
 	defer file.Close()
-
-	// 寫入UTF-8 BOM，防止中文亂碼
-	file.WriteString("\xEF\xBB\xBF")
 
 	w = csv.NewWriter(file)
 	// 寫入資料
