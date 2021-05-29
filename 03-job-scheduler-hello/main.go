@@ -61,7 +61,8 @@ func taskHttpRequest() {
 func main() {
 
 	// 不存在則建立;存在繼續往下寫;讀寫模式;
-	file, err := os.OpenFile("1_call_hello_list.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile("1_call_hello_list.csv", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0660)
+	//file, err := os.OpenFile("1_call_hello_list.csv", os.O_RDWR|os.O_APPEND, 0660)
 	if err != nil {
 		fmt.Println("open file is failed, err: ", err)
 	}

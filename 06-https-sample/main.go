@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -35,6 +36,25 @@ func GetDownloadFileSample(c *gin.Context) {
 	c.Writer.Header().Add("Content-Type", "application/octet-stream")
 	c.File(fileName)
 }
+func PostUploadFile(c *gin.Context) {
+	name := c.PostForm("name")
+	email := c.PostForm("email")
+
+	// Source
+	file, err := c.FormFile("file")
+	if err != nil {
+		c.String(http.StatusBadRequest, fmt.Sprintf("get form err: %s", err.Error()))
+		return
+	}
+
+	filename := filepath.Base(file.Filename)
+	if err := c.SaveUploadedFile(file, filename); err != nil {
+		c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
+		return
+	}
+
+	c.String(http.StatusOK, fmt.Sprintf("檔案上傳成功！ File %s uploaded successfully with fields name=%s and email=%s.", file.Filename, name, email))
+}
 
 func main() {
 	port := ":8443"
@@ -43,6 +63,8 @@ func main() {
 	router.GET("/hello", GetHello)
 	router.GET("/headers", GetHeaders)
 	router.GET("/download", GetDownloadFileSample)
+	router.Static("/sanfran", "./public")
+	router.POST("/upload", PostUploadFile)
 
 	//logrus.Fatal(router.RunTLS(port, "server.crt", "server.key"))
 	logrus.Fatal(router.RunTLS(port, "maxhuang_me.crt", "myserver.key"))
