@@ -57,7 +57,7 @@ func PostUploadFile(c *gin.Context) {
 }
 
 func main() {
-	port := ":8443"
+	port := ":443"
 	router := gin.Default()
 
 	router.GET("/hello", GetHello)
