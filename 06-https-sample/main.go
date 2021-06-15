@@ -36,6 +36,15 @@ func GetDownloadFileSample(c *gin.Context) {
 	c.Writer.Header().Add("Content-Type", "application/octet-stream")
 	c.File(fileName)
 }
+
+func GetDumpFileSample(c *gin.Context) {
+	fileName := "sysdump-20210615-113020.tar"
+	// 設定此 Header 告訴瀏覽器下載檔案。 如果沒設定則會在新的 tab 開啟檔案。
+	c.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName)) //fmt.Sprintf("attachment; filename=%s", filename) Downloaded file renamed
+	c.Writer.Header().Add("Content-Type", "application/octet-stream")
+	c.File(fileName)
+}
+
 func PostUploadFile(c *gin.Context) {
 	name := c.PostForm("name")
 	email := c.PostForm("email")
@@ -65,6 +74,8 @@ func main() {
 	router.GET("/download", GetDownloadFileSample)
 	router.Static("/sanfran", "./public")
 	router.POST("/upload", PostUploadFile)
+
+	router.GET("/dump", GetDumpFileSample)
 
 	//logrus.Fatal(router.RunTLS(port, "server.crt", "server.key"))
 	logrus.Fatal(router.RunTLS(port, "maxhuang_me.crt", "myserver.key"))
