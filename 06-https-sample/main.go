@@ -37,8 +37,8 @@ func GetDownloadFileSample(c *gin.Context) {
 	c.File(fileName)
 }
 
-func GetDumpFileSample(c *gin.Context) {
-	fileName := "sysdump-20210615-113020.tar"
+func GetOvaFileSample(c *gin.Context) {
+	fileName := "rbt_plcm-3.4.1-5464.ova"
 	// 設定此 Header 告訴瀏覽器下載檔案。 如果沒設定則會在新的 tab 開啟檔案。
 	c.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName)) //fmt.Sprintf("attachment; filename=%s", filename) Downloaded file renamed
 	c.Writer.Header().Add("Content-Type", "application/octet-stream")
@@ -75,7 +75,7 @@ func main() {
 	router.Static("/sanfran", "./public")
 	router.POST("/upload", PostUploadFile)
 
-	router.GET("/dump", GetDumpFileSample)
+	router.GET("/ova", GetOvaFileSample)
 
 	//logrus.Fatal(router.RunTLS(port, "server.crt", "server.key"))
 	logrus.Fatal(router.RunTLS(port, "maxhuang_me.crt", "myserver.key"))
