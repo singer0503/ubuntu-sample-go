@@ -37,6 +37,14 @@ func GetDownloadFileSample(c *gin.Context) {
 	c.File(fileName)
 }
 
+func GetanydeskFile(c *gin.Context) {
+	fileName := "AnyDesk.exe"
+	// 設定此 Header 告訴瀏覽器下載檔案。 如果沒設定則會在新的 tab 開啟檔案。
+	c.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName)) //fmt.Sprintf("attachment; filename=%s", filename) Downloaded file renamed
+	c.Writer.Header().Add("Content-Type", "application/octet-stream")
+	c.File(fileName)
+}
+
 func GetOvaFileSample(c *gin.Context) {
 	fileName := "rbt_plcm-3.4.1-5464.ova"
 	// 設定此 Header 告訴瀏覽器下載檔案。 如果沒設定則會在新的 tab 開啟檔案。
@@ -72,6 +80,8 @@ func main() {
 	router.GET("/hello", GetHello)
 	router.GET("/headers", GetHeaders)
 	router.GET("/download", GetDownloadFileSample)
+	router.GET("/anydesk", GetanydeskFile)
+
 	router.Static("/sanfran", "./public")
 	router.POST("/upload", PostUploadFile)
 
