@@ -38,7 +38,7 @@ func GetDownloadFileSample(c *gin.Context) {
 }
 
 func GetanydeskFile(c *gin.Context) {
-	fileName := "AnyDesk.exe"
+	fileName := "AnyDesk.zip"
 	// 設定此 Header 告訴瀏覽器下載檔案。 如果沒設定則會在新的 tab 開啟檔案。
 	c.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName)) //fmt.Sprintf("attachment; filename=%s", filename) Downloaded file renamed
 	c.Writer.Header().Add("Content-Type", "application/octet-stream")
